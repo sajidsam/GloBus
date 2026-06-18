@@ -1,0 +1,25 @@
+{
+  "name": "globus_backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "mongodb": "^6.20.0",
+    "multer": "^2.0.2",
+    "nodemon": "^3.1.10",
+    "react-router": "^7.9.3",
+    "sharp": "^0.34.5",
+    "sslcommerz-lts": "^1.2.0"
+  }
+}

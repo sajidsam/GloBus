@@ -1,0 +1,40 @@
+E:\E-Commerce\Globus_ForntEnd
+├── public
+│   ├── Images
+│   │   ├── ErrorPage
+│   │   ├── ImageMenu
+│   │   ├── Electronics.png
+│   │   ├── FlashSale.png
+│   │   ├── Google.png
+│   │   ├── HomeAppliance.png
+│   │   ├── logo.png
+├── src
+│   ├── assets
+│   ├── Components
+│   │   ├── AdvBanner.jsx
+│   │   ├── Footer.jsx
+│   │   ├── Header.jsx
+│   │   ├── MenuItem.jsx
+│   │   ├── PromotionCard.jsx
+│   │   ├── Timer.jsx
+│   ├── Pages
+│   │   ├── Error.jsx
+│   │   ├── Home.jsx
+│   │   ├── SignIn.jsx
+│   │   ├── SignUp.jsx
+│   ├── Routes
+│   │   ├── AllRoutes.jsx
+│   ├── App.css
+│   ├── App.jsx
+│   ├── firebase.config.js
+│   ├── index.css
+│   ├── main.jsx
+├── .env
+├── .gitignore
+├── eslint.config.js
+├── index.html
+├── package-lock.json
+├── package.json
+├── README.md
+├── structure.txt
+├── vite.config.js

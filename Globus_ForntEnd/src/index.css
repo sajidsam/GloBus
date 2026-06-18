@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+/* Google Fonts */
+
+.indie{
+  font-family: "Indie Flower", cursive;
+  font-style: normal;
+}
+
+
+.oswald {
+  font-family: "Oswald", sans-serif;
+  font-optical-sizing: auto;
+}
+
+.patrick{
+  font-family: "Patrick Hand", cursive;
+  
+}
+
+
+/* Loading Spinner */
+
+.dot {
+  width: 10px;
+  height: 10px;
+  background-color: black;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+@keyframes bounce {
+  0%, 80%, 100% { transform: scale(0); }
+  40% { transform: scale(1); }
+}
+
+.animate-bounce {
+  animation: bounce 1.2s infinite ease-in-out;
+}
+
+.delay-150 {
+  animation-delay: 0.15s;
+}
+
+.delay-300 {
+  animation-delay: 0.3s;
+}
+
+/* ----Loading spinner END---- */
+
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+/* Smooth transitions */
+.transition-all {
+  transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
