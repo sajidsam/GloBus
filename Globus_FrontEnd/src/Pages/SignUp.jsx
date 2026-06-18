@@ -7,6 +7,8 @@ import {
 import { useNavigate } from "react-router-dom";
 
 const googleProvider = new GoogleAuthProvider();
+// Backend Api
+const API_URL = import.meta.env.VITE_API_URL;
 
 const SignUp = () => {
     const [name, setName] = useState("");
@@ -30,7 +32,7 @@ const SignUp = () => {
             const user = { name, email, phone, password };
             
 
-            const res = await fetch("https://glo-bus-backend.vercel.app/signup", {
+            const res = await fetch(`${API_URL}/signup`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(user),

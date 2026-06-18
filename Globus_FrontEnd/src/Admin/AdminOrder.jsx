@@ -18,6 +18,9 @@ import {
   faSortDown
 } from '@fortawesome/free-solid-svg-icons';
 
+// Backend Api
+const API_URL = import.meta.env.VITE_API_URL;
+
 const AdminOrder = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -38,7 +41,7 @@ const AdminOrder = () => {
     try {
       setLoading(true);
       
-      const response = await fetch('https://glo-bus-backend.vercel.app/api/orders/all', {
+      const response = await fetch(`${API_URL}/api/orders/all`, {
         headers: {
           'Content-Type': 'application/json'
         }
@@ -86,7 +89,7 @@ const AdminOrder = () => {
 
   const updateOrderStatus = async (orderId, newStatus) => {
     try {
-      const response = await fetch(`https://glo-bus-backend.vercel.app/api/orders/${orderId}/status`, {
+      const response = await fetch(`${API_URL}/api/orders/${orderId}/status`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json'

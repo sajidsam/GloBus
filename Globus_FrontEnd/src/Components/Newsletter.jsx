@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
 
+// Backend Api
+const API_URL = import.meta.env.VITE_API_URL;
+
 const Newsletter = () => {
     const [email, setEmail] = useState('');
     const [message, setMessage] = useState('');
@@ -13,7 +16,7 @@ const Newsletter = () => {
         setMessage('');
 
         try {
-            const response = await fetch('https://glo-bus-backend.vercel.app/api/newsletter/subscribe', {
+            const response = await fetch(`${API_URL}/api/newsletter/subscribe`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

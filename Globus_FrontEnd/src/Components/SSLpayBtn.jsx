@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLock, faSpinner, faShieldAlt } from '@fortawesome/free-solid-svg-icons';
 
+// Backend Api
+const API_URL = import.meta.env.VITE_API_URL;
+
 const SSLpayBtn = ({ 
   total, 
   shippingInfo, 
@@ -71,7 +74,7 @@ const SSLpayBtn = ({
       console.log('Sending payment data to backend:', paymentData);
 
       // SSL Commerz 
-      const response = await fetch('https://glo-bus-backend.vercel.app/api/sslcommerz/init', {
+      const response = await fetch(`${API_URL}/api/sslcommerz/init`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

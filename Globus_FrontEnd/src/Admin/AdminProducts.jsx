@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 
+// Backend Api
+const API_URL = import.meta.env.VITE_API_URL;
+
 const AdminProducts = () => {
   const [products, setProducts] = useState([]);
   const [activeTab, setActiveTab] = useState("basic");
@@ -77,7 +80,7 @@ const AdminProducts = () => {
   // Fetch products
   const fetchProducts = async () => {
     try {
-      const res = await fetch("https://glo-bus-backend.vercel.app/browseProduct");
+      const res = await fetch(`${API_URL}/browseProduct`);
       const data = await res.json();
       setProducts(data);
     } catch (err) {
@@ -195,7 +198,7 @@ const AdminProducts = () => {
   const deleteProduct = async (id) => {
     if (window.confirm("Are you sure you want to delete this product?")) {
       try {
-        const res = await fetch(`https://glo-bus-backend.vercel.app/products/${id}`, { method: "DELETE" });
+        const res = await fetch(`${API_URL}/products/${id}`, { method: "DELETE" });
         if (res.ok) fetchProducts();
       } catch (err) {
         console.log(err);
@@ -263,7 +266,7 @@ const AdminProducts = () => {
         const updateBody = { ...body };
         delete updateBody._id;
 
-        const res = await fetch(`https://glo-bus-backend.vercel.app/products/${editingProductId}`, {
+        const res = await fetch(`${API_URL}/products/${editingProductId}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(updateBody),
@@ -275,7 +278,7 @@ const AdminProducts = () => {
           fetchProducts();
         }
       } else {
-        const res = await fetch("https://glo-bus-backend.vercel.app/addProducts", {
+        const res = await fetch(`${API_URL}/addProducts`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body)

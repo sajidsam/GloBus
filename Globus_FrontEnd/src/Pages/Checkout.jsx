@@ -17,6 +17,9 @@ import {
 import { useNavigate, useLocation } from 'react-router-dom';
 import SSLpayBtn from '../Components/SSLpayBtn';
 
+// Backend Api
+const API_URL = import.meta.env.VITE_API_URL;
+
 const Checkout = () => {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -83,7 +86,7 @@ const Checkout = () => {
       let cartData = [];
 
       if (user?.email) {
-        const response = await fetch(`https://glo-bus-backend.vercel.app/cart/${user.email}`);
+        const response = await fetch(`${API_URL}/cart/${user.email}`);
         if (response.ok) {
           cartData = await response.json();
         }

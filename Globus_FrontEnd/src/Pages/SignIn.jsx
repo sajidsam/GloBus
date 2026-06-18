@@ -5,6 +5,9 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Hooks/AuthContext";
 import { Link } from "react-router-dom";
 
+// Backend Api
+const API_URL = import.meta.env.VITE_API_URL;
+
 const SignIn = () => {
   const { login } = useAuth();
   const [email, setEmail] = useState("");
@@ -17,7 +20,7 @@ const SignIn = () => {
     setError("");
 
     try {
-      const res = await fetch("https://glo-bus-backend.vercel.app/signin", {
+      const res = await fetch(`${API_URL}/signin`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),

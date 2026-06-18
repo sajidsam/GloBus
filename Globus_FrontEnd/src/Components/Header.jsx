@@ -14,6 +14,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, useNavigate } from "react-router-dom";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 
+// Backend Api
+const API_URL = import.meta.env.VITE_API_URL;
+
 const langs = [
   { code: "us", name: "English" },
   { code: "es", name: "Spanish" },
@@ -63,7 +66,7 @@ const Header = () => {
   useEffect(() => {
     const fetchAllProducts = async () => {
       try {
-        const res = await fetch("https://glo-bus-backend.vercel.app/browseProduct");
+        const res = await fetch(`${API_URL}/browseProduct`);
         const data = await res.json();
         setAllProducts(data);
       } catch (err) {

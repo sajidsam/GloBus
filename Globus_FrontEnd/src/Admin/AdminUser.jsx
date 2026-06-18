@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 
+// Backend Api
+const API_URL = import.meta.env.VITE_API_URL;
+
 const AdminUser = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -7,7 +10,7 @@ const AdminUser = () => {
   // Fetch all users
   const fetchUsers = async () => {
     try {
-      const response = await fetch("https://glo-bus-backend.vercel.app/admin/users");
+      const response = await fetch(`${API_URL}/admin/users`);
       const data = await response.json();
       setUsers(data);
       setLoading(false);
@@ -23,7 +26,7 @@ const AdminUser = () => {
     if (!confirmDelete) return; 
 
     try {
-      const response = await fetch(`https://glo-bus-backend.vercel.app/admin/user/${id}`, {
+      const response = await fetch(`${API_URL}/admin/user/${id}`, {
         method: "DELETE",
       });
 
@@ -42,7 +45,7 @@ const AdminUser = () => {
   // Toggle user status
   const toggleStatus = async (id) => {
     try {
-      const response = await fetch(`https://glo-bus-backend.vercel.app/admin/user/${id}/status`, {
+      const response = await fetch(`${API_URL}/admin/user/${id}/status`, {
         method: "PATCH",
       });
       const data = await response.json();

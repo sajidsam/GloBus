@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import AddToCartButton from "../Components/AddToCartButton";
 
+// Backend Api
+const API_URL = import.meta.env.VITE_API_URL;
+
 const ProductsDetail = () => {
   const { state } = useLocation();
   const { id } = useParams();
@@ -22,7 +25,7 @@ const ProductsDetail = () => {
         setProductData(state.product);
       } else if (id) {
         try {
-          const res = await fetch(`https://glo-bus-backend.vercel.app/productDetail/${id}`);
+          const res = await fetch(`${API_URL}/productDetail/${id}`);
           const data = await res.json();
           if (data) setProductData(data);
           else navigate("/products");
@@ -59,7 +62,7 @@ const ProductsDetail = () => {
     
     setLoadingRelated(true);
     try {
-      const response = await fetch("https://glo-bus-backend.vercel.app/browseProduct");
+      const response = await fetch(`${API_URL}/browseProduct`);
       const allProducts = await response.json();
       
       // Filter products by same category, exclude current product, and limit to 3

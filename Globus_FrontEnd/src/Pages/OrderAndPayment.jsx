@@ -21,6 +21,9 @@ import {
   faEnvelope
 } from '@fortawesome/free-solid-svg-icons';
 
+// Backend Api
+const API_URL = import.meta.env.VITE_API_URL;
+
 const OrderAndPayment = () => {
   const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
@@ -46,7 +49,7 @@ const OrderAndPayment = () => {
         return;
       }
       
-      const response = await fetch(`https://glo-bus-backend.vercel.app/api/orders?userEmail=${user.email}`);
+      const response = await fetch(`${API_URL}/api/orders?userEmail=${user.email}`);
       const data = await response.json();
       
       if (data.success) {

@@ -4,6 +4,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar, faFire, faRocket, faAppleAlt, faMobile, faEye } from '@fortawesome/free-solid-svg-icons';
 import AddToCartButton from "./AddToCartButton"; 
 
+// Backend Api
+const API_URL = import.meta.env.VITE_API_URL;
+
 const Products = () => {
   const [products, setProducts] = useState([]);
   const [featuredProducts, setFeaturedProducts] = useState([]);
@@ -13,7 +16,7 @@ const Products = () => {
 
   // Fetch products 
   useEffect(() => {
-    fetch("https://glo-bus-backend.vercel.app/browseProduct")
+    fetch(`${API_URL}/browseProduct`)
       .then((res) => res.json())
       .then((data) => {
         setProducts(data);

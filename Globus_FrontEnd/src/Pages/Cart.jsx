@@ -17,6 +17,9 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 
+// Backend Api
+const API_URL = import.meta.env.VITE_API_URL;
+
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -46,7 +49,7 @@ const Cart = () => {
       console.log("Loading cart for user:", user?.email);
       
       if (user && user.email) {
-        const response = await fetch(`https://glo-bus-backend.vercel.app/cart/${user.email}`);
+        const response = await fetch(`${API_URL}/cart/${user.email}`);
         
         if (response.ok) {
           const backendCart = await response.json();
@@ -102,9 +105,9 @@ const Cart = () => {
     try {
       const user = JSON.parse(localStorage.getItem("user"));
       if (user && user.email && item._id) {
-        console.log(` Calling: PUT https://glo-bus-backend.vercel.app/cart/update/${item._id}`);
+        console.log(` Calling: PUT ${API_URL}/cart/update/${item._id}`);
         
-        const updateResponse = await fetch(`https://glo-bus-backend.vercel.app/cart/update/${item._id}`, {
+        const updateResponse = await fetch(`${API_URL}/cart/update/${item._id}`, {
           method: 'PUT',
           headers: { 
             'Content-Type': 'application/json',
@@ -148,9 +151,9 @@ const Cart = () => {
     try {
       const user = JSON.parse(localStorage.getItem("user"));
       if (user && user.email && item._id) {
-        console.log(`Calling: DELETE https://glo-bus-backend.vercel.app/cart/remove/${item._id}`);
+        console.log(`Calling: DELETE ${API_URL}/cart/remove/${item._id}`);
         
-        const deleteResponse = await fetch(`https://glo-bus-backend.vercel.app/cart/remove/${item._id}`, {
+        const deleteResponse = await fetch(`${API_URL}/cart/remove/${item._id}`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
@@ -191,9 +194,9 @@ const Cart = () => {
     try {
       const user = JSON.parse(localStorage.getItem("user"));
       if (user && user.email) {
-        console.log(`Calling: DELETE https://glo-bus-backend.vercel.app/cart/clear/${user.email}`);
+        console.log(`Calling: DELETE ${API_URL}/cart/clear/${user.email}`);
         
-        const response = await fetch(`https://glo-bus-backend.vercel.app/cart/clear/${user.email}`, {
+        const response = await fetch(`${API_URL}/cart/clear/${user.email}`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',

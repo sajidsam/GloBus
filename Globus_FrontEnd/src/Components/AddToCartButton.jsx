@@ -3,6 +3,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartPlus, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 
+// Backend Api
+const API_URL = import.meta.env.VITE_API_URL;
+
 const AddToCartButton = ({ product, className = "", showIcon = true, showText = true }) => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -49,7 +52,7 @@ const AddToCartButton = ({ product, className = "", showIcon = true, showText = 
 
       console.log('Sending cart data:', cartData);
 
-      const response = await fetch('https://glo-bus-backend.vercel.app/cart/add', {
+      const response = await fetch(`${API_URL}/cart/add`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
