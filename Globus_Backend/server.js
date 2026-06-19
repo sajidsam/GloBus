@@ -52,10 +52,7 @@ const cors = require("cors");
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    "https://e-commerce-two-sepia-58.vercel.app",
-    "https://e-commerce-two-sepia-58.vercel.app/",
-    "https://global-business-rho.vercel.app",
-    "https://global-business-rho.vercel.app/"
+    "https://glo-bus-virid.vercel.app/"
   ],
   credentials: true
 }));
