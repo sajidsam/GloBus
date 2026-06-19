@@ -1,0 +1,16 @@
+services:
+  backend:
+    build: ./Globus_Backend
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./Globus_Backend/.env
+    restart: unless-stopped
+
+  frontend:
+    build: ./Globus_FrontEnd
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    restart: unless-stopped

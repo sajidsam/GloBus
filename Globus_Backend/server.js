@@ -49,15 +49,15 @@ const app = express();
 const cors = require("cors");
 
 // CORS setup for your domains
-app.use(cors({ 
+app.use(cors({
   origin: [
-    "http://localhost:5173", 
+    "http://localhost:5173",
     "https://e-commerce-two-sepia-58.vercel.app",
     "https://e-commerce-two-sepia-58.vercel.app/",
     "https://global-business-rho.vercel.app",
     "https://global-business-rho.vercel.app/"
-  ], 
-  credentials: true 
+  ],
+  credentials: true
 }));
 app.use(express.json());
 
@@ -103,7 +103,7 @@ async function run() {
     app.get("/api/orders", getUserOrders);
 
     // NewsLetter
-     app.post("/api/newsletter/subscribe", subscribeNewsletter);
+    app.post("/api/newsletter/subscribe", subscribeNewsletter);
 
     // Cart Route
     app.post("/cart/add", addToCart);
@@ -126,18 +126,20 @@ async function run() {
     app.get("/api/orders/:id", getOrderById);
     app.patch("/api/orders/:id/status", updateOrderStatus);
     app.delete("/api/orders/:id", deleteOrder);
-    
+
 
     // Health check route
     app.get("/", (req, res) => {
-      res.json({ 
-        success: true, 
+      res.json({
+        success: true,
         message: "Globus Backend is running!",
         timestamp: new Date().toISOString()
       });
     });
 
-    app.listen(port, () => console.log(`Server running on http://localhost:${port}`));
+    app.listen(port, "0.0.0.0", () => {
+      console.log(`Server running on port ${port}`);
+    });
   } catch (error) {
     console.log("MongoDB connection failed:", error.message);
   }
