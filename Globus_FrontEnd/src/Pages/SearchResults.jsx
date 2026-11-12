@@ -10,6 +10,7 @@ import {
   faArrowLeft,
   faBagShopping,
   faLayerGroup,
+  faHeart,
 } from "@fortawesome/free-solid-svg-icons";
 import AddToCartButton from "../Components/AddToCartButton";
 
@@ -124,72 +125,121 @@ const SearchResults = () => {
     navigate(`/productDetail/${product._id}`, { state: { product } });
   };
 
+  const handleAddToWishlist = (e, product) => {
+    e.stopPropagation();
+    try {
+      const saved = JSON.parse(localStorage.getItem("wishlist") || "[]");
+      if (!saved.some((item) => item._id === product._id)) {
+        saved.push(product);
+        localStorage.setItem("wishlist", JSON.stringify(saved));
+        window.dispatchEvent(new Event("wishlist-updated"));
+      }
+      alert(`${product.name || "Product"} added to wishlist!`);
+    } catch (err) {
+      console.error("Wishlist save error:", err);
+    }
+  };
+
   const renderProductCard = (product) => (
     <div
       key={product._id}
-      className="bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-200 dark:border-gray-700 flex flex-col justify-between group overflow-hidden"
+      onClick={() => handleViewDetail(product)}
+      className="group bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md border border-gray-200 dark:border-gray-700 cursor-pointer flex flex-col h-full transition-all duration-300"
     >
-      {/* Image Container */}
-      <div className="relative overflow-hidden bg-gray-100 dark:bg-gray-700/50">
+      <div className="relative overflow-hidden rounded-t-xl">
         <img
-          src={product.images?.[0] || "/placeholder.png"}
+          src={
+            product.images?.[0] ||
+            "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80"
+          }
           alt={product.name}
-          className="w-full h-28 sm:h-32 md:h-36 xl:h-38 2xl:h-44 object-cover rounded-t-xl group-hover:scale-105 transition-transform duration-500"
+          className="w-full h-24 sm:h-32 md:h-36 xl:h-38 2xl:h-44 object-cover transition-transform duration-500 ease-out group-hover:scale-105"
           onError={(e) => {
-            e.target.src = "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=400&q=80";
+            e.target.src =
+              "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80";
           }}
         />
+        <button
+          onClick={(e) => handleAddToWishlist(e, product)}
+          className="absolute top-1.5 right-1.5 text-gray-300 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400 drop-shadow-md hover:scale-110 transition-all z-10 p-1"
+          title="Add to Wishlist"
+        >
+          <FontAwesomeIcon
+            icon={faHeart}
+            className="text-xs sm:text-sm 2xl:text-base"
+          />
+        </button>
         {product.discountPrice && (
-          <div className="absolute top-2 left-2 bg-gradient-to-r from-red-600 to-rose-500 text-white px-2 py-0.5 rounded-md text-[10px] sm:text-xs font-bold shadow-sm">
-            {Math.round(((product.price - product.discountPrice) / product.price) * 100)}% OFF
+          <div
+            className="absolute top-0 left-2 2xl:left-3 bg-[#e60000] text-white w-9 2xl:w-10 pt-1 pb-1.5 2xl:pt-1.5 2xl:pb-2 flex flex-col items-center justify-start z-10 drop-shadow-md rounded-t-md"
+            style={{
+              clipPath:
+                "polygon(0 0, 100% 0, 100% 100%, 83% 85%, 66% 100%, 50% 85%, 33% 100%, 16% 85%, 0 100%)",
+            }}
+          >
+            <span className="text-[10px] 2xl:text-[11px] font-extrabold leading-none">
+              {Math.round(
+                ((product.price - product.discountPrice) / product.price) * 100,
+              )}
+              %
+            </span>
+            <span className="text-[7px] 2xl:text-[8px] font-bold leading-none mt-0.5">
+              OFF
+            </span>
           </div>
         )}
       </div>
-
-      {/* Product Information */}
-      <div className="p-3 sm:p-3.5 flex-1 flex flex-col justify-between">
+      <div className="p-1.5 sm:p-2.5 2xl:p-3 flex-1 flex flex-col justify-between">
         <div>
-          <h3 className="font-semibold text-gray-800 dark:text-gray-100 text-xs sm:text-sm leading-snug line-clamp-2 min-h-[32px] sm:min-h-[38px] group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+          <h3 className="font-semibold text-gray-800 dark:text-gray-100 text-[11px] sm:text-sm leading-snug line-clamp-2 min-h-[26px] sm:min-h-[32px] 2xl:min-h-[36px]">
             {product.name}
           </h3>
-          <p className="text-gray-400 dark:text-gray-500 text-[11px] sm:text-xs mt-1 truncate">
-            {product.brand || product.category}
+          <p className="text-gray-500 dark:text-gray-400 text-[9px] sm:text-[11px] 2xl:text-xs mt-0.5 truncate hidden sm:block">
+            {product.brand}
           </p>
         </div>
 
-        <div className="mt-3">
-          <div className="flex items-center justify-between mb-2">
-            <div className="flex items-baseline gap-1.5">
-              <p className="text-sm sm:text-base font-bold text-blue-600 dark:text-blue-400">
+        <div className="flex items-end justify-between pt-1 sm:pt-2">
+          <div>
+            <div className="flex items-center gap-1">
+              <p className="text-[11px] sm:text-sm font-bold text-blue-600 dark:text-blue-400">
                 ৳{product.discountPrice || product.price}
               </p>
               {product.discountPrice && (
-                <p className="text-[10px] sm:text-xs text-gray-400 dark:text-gray-500 line-through">
+                <p className="hidden sm:block text-[9px] sm:text-[10px] text-gray-400 line-through">
                   ৳{product.price}
                 </p>
               )}
             </div>
             {product.ratings && (
-              <div className="flex items-center gap-1 bg-amber-50 dark:bg-amber-900/30 px-1.5 py-0.5 rounded">
-                <FontAwesomeIcon icon={faStar} className="text-amber-500 text-[10px]" />
-                <span className="text-[11px] font-semibold text-amber-700 dark:text-amber-300">
-                  {product.ratings.average || 5.0}
+              <div className="hidden sm:flex items-center gap-1 mt-0.5">
+                <FontAwesomeIcon
+                  icon={faStar}
+                  className="text-yellow-400 text-[9px] sm:text-[10px]"
+                />
+                <span className="text-[9px] sm:text-[10px] text-gray-600 dark:text-gray-300">
+                  {product.ratings.average}
                 </span>
               </div>
             )}
           </div>
 
-          <div className="flex justify-between items-center gap-2 mt-2">
-            <div className="flex-1">
-              <AddToCartButton product={product} />
-            </div>
+          <div className="flex items-center gap-1.5 pb-0.5" onClick={(e) => e.stopPropagation()}>
             <button
-              onClick={() => handleViewDetail(product)}
-              className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 px-2.5 py-2 rounded-lg transition-colors flex items-center gap-1 text-xs font-medium cursor-pointer"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleViewDetail(product);
+              }}
+              className="text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white transition p-0.5"
+              title="Details"
             >
-              <FontAwesomeIcon icon={faEye} />
-              <span className="hidden sm:inline">Details</span>
+              <FontAwesomeIcon icon={faEye} className="text-xs sm:text-sm" />
             </button>
+            <AddToCartButton
+              product={product}
+              showText={false}
+              className="!bg-transparent !text-orange-500 !p-0 !m-0 hover:!text-orange-600 hover:!bg-transparent transition shadow-none text-sm sm:text-base"
+            />
           </div>
         </div>
       </div>

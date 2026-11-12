@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar, faEye, faHeart } from "@fortawesome/free-solid-svg-icons";
 import AddToCartButton from "../Components/AddToCartButton";
 
 // Backend Api
@@ -146,17 +148,20 @@ const ProductsDetail = () => {
     );
   };
 
-  const handleAddToWishlist = () => {
+  const handleAddToWishlist = (e, item) => {
+    if (e?.stopPropagation) e.stopPropagation();
+    const targetProduct = item || productData;
+    if (!targetProduct) return;
     try {
       const saved = JSON.parse(localStorage.getItem("wishlist") || "[]");
-      const targetId = String(productData._id || productData.productId || productData.id);
+      const targetId = String(targetProduct._id || targetProduct.productId || targetProduct.id);
       const exists = saved.some((w) => String(w._id || w.productId || w.id) === targetId);
       if (!exists) {
-        saved.push(productData);
+        saved.push(targetProduct);
         localStorage.setItem("wishlist", JSON.stringify(saved));
         window.dispatchEvent(new Event("wishlist-updated"));
       }
-      alert(`${productData.name || "Product"} added to wishlist!`);
+      alert(`${targetProduct.name || "Product"} added to wishlist!`);
     } catch (err) {
       console.error("Wishlist save error:", err);
     }
@@ -276,6 +281,8 @@ const ProductsDetail = () => {
     navigate(`/productDetail/${product._id || product.id}`, { state: { product } });
     window.scrollTo(0, 0);
   };
+
+
 
   if (!productData)
     return (
@@ -926,63 +933,108 @@ const ProductsDetail = () => {
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
           </div>
         ) : relatedProducts.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-6 2xl:grid-cols-6 gap-2.5 sm:gap-3 lg:gap-3.5">
             {relatedProducts.map((product) => (
               <div
                 key={product._id}
-                className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer"
                 onClick={() => handleRelatedProductClick(product)}
+                className="group bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md border border-gray-200 dark:border-gray-700 cursor-pointer flex flex-col h-full transition-all duration-300"
               >
-                <div className="relative">
+                <div className="relative overflow-hidden rounded-t-xl">
                   <img
-                    src={product.images?.[0]}
+                    src={
+                      product.images?.[0] ||
+                      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80"
+                    }
                     alt={product.name}
-                    className="w-full h-48 object-cover"
+                    className="w-full h-24 sm:h-32 md:h-36 xl:h-38 2xl:h-44 object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                    onError={(e) => {
+                      e.target.src =
+                        "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80";
+                    }}
                   />
+                  <button
+                    onClick={(e) => handleAddToWishlist(e, product)}
+                    className="absolute top-1.5 right-1.5 text-gray-300 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400 drop-shadow-md hover:scale-110 transition-all z-10 p-1"
+                    title="Add to Wishlist"
+                  >
+                    <FontAwesomeIcon
+                      icon={faHeart}
+                      className="text-xs sm:text-sm 2xl:text-base"
+                    />
+                  </button>
                   {product.discountPrice && (
-                    <div className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded text-sm font-bold">
-                      {Math.round(
-                        ((product.price - product.discountPrice) /
-                          product.price) *
-                          100,
-                      )}
-                      % OFF
+                    <div
+                      className="absolute top-0 left-2 2xl:left-3 bg-[#e60000] text-white w-9 2xl:w-10 pt-1 pb-1.5 2xl:pt-1.5 2xl:pb-2 flex flex-col items-center justify-start z-10 drop-shadow-md rounded-t-md"
+                      style={{
+                        clipPath:
+                          "polygon(0 0, 100% 0, 100% 100%, 83% 85%, 66% 100%, 50% 85%, 33% 100%, 16% 85%, 0 100%)",
+                      }}
+                    >
+                      <span className="text-[10px] 2xl:text-[11px] font-extrabold leading-none">
+                        {Math.round(
+                          ((product.price - product.discountPrice) / product.price) * 100,
+                        )}
+                        %
+                      </span>
+                      <span className="text-[7px] 2xl:text-[8px] font-bold leading-none mt-0.5">
+                        OFF
+                      </span>
                     </div>
                   )}
                 </div>
-                <div className="p-4">
-                  <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-2 line-clamp-2">
-                    {product.name}
-                  </h4>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <p className="text-lg font-bold text-blue-600">
-                        ৳{product.discountPrice || product.price}
-                      </p>
-                      {product.discountPrice && (
-                        <p className="text-sm text-gray-500 line-through">
-                          ৳{product.price}
+                <div className="p-1.5 sm:p-2.5 2xl:p-3 flex-1 flex flex-col justify-between">
+                  <div>
+                    <h3 className="font-semibold text-gray-800 dark:text-gray-100 text-[11px] sm:text-sm leading-snug line-clamp-2 min-h-[26px] sm:min-h-[32px] 2xl:min-h-[36px]">
+                      {product.name}
+                    </h3>
+                    <p className="text-gray-500 dark:text-gray-400 text-[9px] sm:text-[11px] 2xl:text-xs mt-0.5 truncate hidden sm:block">
+                      {product.brand}
+                    </p>
+                  </div>
+
+                  <div className="flex items-end justify-between pt-1 sm:pt-2">
+                    <div>
+                      <div className="flex items-center gap-1">
+                        <p className="text-[11px] sm:text-sm font-bold text-blue-600 dark:text-blue-400">
+                          ৳{product.discountPrice || product.price}
                         </p>
+                        {product.discountPrice && (
+                          <p className="hidden sm:block text-[9px] sm:text-[10px] text-gray-400 line-through">
+                            ৳{product.price}
+                          </p>
+                        )}
+                      </div>
+                      {product.ratings && (
+                        <div className="hidden sm:flex items-center gap-1 mt-0.5">
+                          <FontAwesomeIcon
+                            icon={faStar}
+                            className="text-yellow-400 text-[9px] sm:text-[10px]"
+                          />
+                          <span className="text-[9px] sm:text-[10px] text-gray-600 dark:text-gray-300">
+                            {product.ratings.average}
+                          </span>
+                        </div>
                       )}
                     </div>
-                    {product.ratings && (
-                      <div className="flex items-center gap-1">
-                        <div className="flex text-yellow-400">
-                          {[...Array(5)].map((_, i) => (
-                            <svg
-                              key={i}
-                              className={`w-3 h-3 ${i < Math.floor(product.ratings.average || 0) ? "fill-current" : "text-gray-300"}`}
-                              viewBox="0 0 20 20"
-                            >
-                              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                            </svg>
-                          ))}
-                        </div>
-                        <span className="text-xs text-gray-600 dark:text-gray-400">
-                          {product.ratings.average}
-                        </span>
-                      </div>
-                    )}
+
+                    <div className="flex items-center gap-1.5 pb-0.5" onClick={(e) => e.stopPropagation()}>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleRelatedProductClick(product);
+                        }}
+                        className="text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white transition p-0.5"
+                        title="Details"
+                      >
+                        <FontAwesomeIcon icon={faEye} className="text-xs sm:text-sm" />
+                      </button>
+                      <AddToCartButton
+                        product={product}
+                        showText={false}
+                        className="!bg-transparent !text-orange-500 !p-0 !m-0 hover:!text-orange-600 hover:!bg-transparent transition shadow-none text-sm sm:text-base"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>

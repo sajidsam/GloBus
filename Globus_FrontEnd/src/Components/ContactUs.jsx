@@ -138,29 +138,29 @@ const ContactUs = () => {
   return (
     <>
       {isOpen && (
-        <div className="fixed bottom-20 right-2 sm:right-6 md:right-10 w-[calc(100vw-16px)] sm:w-80 h-[55vh] sm:h-[420px] md:h-[500px] max-h-[480px] z-50 rounded-2xl shadow-2xl bg-white dark:bg-gray-800 border dark:border-gray-700 flex flex-col overflow-hidden transition-all">
-          <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-white px-4 py-3 flex items-center justify-between">
-            <span className="font-semibold">GloBus Support</span>
+        <div className="fixed bottom-16 right-2 sm:right-6 md:right-10 w-[260px] sm:w-[280px] md:w-[300px] h-[320px] sm:h-[350px] md:h-[380px] z-50 rounded-xl shadow-2xl bg-white dark:bg-gray-800 border dark:border-gray-700 flex flex-col overflow-hidden transition-all">
+          <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-white px-3 py-2 flex items-center justify-between">
+            <span className="font-semibold text-xs sm:text-sm">GloBus Support</span>
             <button
               onClick={handleToggle}
-              className="text-gray-300 hover:text-white text-lg font-bold"
+              className="text-gray-300 hover:text-white text-base font-bold"
             >
               ✕
             </button>
           </div>
 
-          <div className="flex-1 overflow-y-auto p-4 bg-gray-50 dark:bg-gray-800 dark:bg-gray-900 flex flex-col gap-2">
-            <p className="text text-gray-600 dark:text-gray-400">
+          <div className="flex-1 overflow-y-auto p-2.5 bg-gray-50 dark:bg-gray-800 dark:bg-gray-900 flex flex-col gap-1.5 text-xs">
+            <p className="text-gray-600 dark:text-gray-400 text-xs">
               Hello {userName || "Guest"}!
             </p>
 
             {messages.map((msg, index) => (
               <div
                 key={index}
-                className={`px-3 py-2 rounded-lg text-sm ${
+                className={`px-2.5 py-1.5 rounded-lg text-xs leading-relaxed ${
                   msg.from === "user"
-                    ? "bg-gray-800 text-white self-end max-w-[70%] dark:bg-gray-700"
-                    : "bg-gray-200 text-gray-800 dark:text-gray-200 self-start max-w-[70%] dark:bg-gray-800 dark:text-gray-200"
+                    ? "bg-gray-800 text-white self-end max-w-[80%] dark:bg-gray-700"
+                    : "bg-gray-200 text-gray-800 dark:text-gray-200 self-start max-w-[80%] dark:bg-gray-800 dark:text-gray-200"
                 }`}
               >
                 {renderMessage(msg.text)}
@@ -168,8 +168,8 @@ const ContactUs = () => {
             ))}
 
             {isTyping && (
-              <div className="px-3 py-2 rounded-lg self-start max-w-[60%] flex justify-center">
-                <span className="flex gap-2">
+              <div className="px-2.5 py-1.5 rounded-lg self-start max-w-[60%] flex justify-center">
+                <span className="flex gap-1.5">
                   <span className="dot animate-bounce bg-black"></span>
                   <span className="dot animate-bounce delay-150 bg-black"></span>
                   <span className="dot animate-bounce delay-300 bg-black"></span>
@@ -180,18 +180,18 @@ const ContactUs = () => {
             <div ref={messagesEndRef} />
           </div>
 
-          <div className="flex items-center p-2 bg-gray-100 dark:bg-gray-700 dark:bg-gray-800 rounded-t-2xl border-t dark:border-gray-700">
+          <div className="flex items-center p-1.5 bg-gray-100 dark:bg-gray-700 dark:bg-gray-800 rounded-t-xl border-t dark:border-gray-700">
             <input
               type="text"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               placeholder="Type or speak..."
-              className="border-none outline-none rounded-2xl px-3 py-2 mx-3 text-black dark:text-white bg-white dark:bg-gray-800 dark:bg-gray-700 flex-1"
+              className="border-none outline-none rounded-xl px-2.5 py-1.5 mx-1.5 text-xs text-black dark:text-white bg-white dark:bg-gray-800 dark:bg-gray-700 flex-1"
               onKeyDown={(e) => e.key === "Enter" && handleSend()}
             />
             <button
               onClick={toggleRecording}
-              className={`text-2xl mr-3 transition-colors ${
+              className={`text-base mr-2 transition-colors ${
                 isRecording
                   ? "text-red-500"
                   : "text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white"
@@ -201,23 +201,23 @@ const ContactUs = () => {
             </button>
             <button
               onClick={handleSend}
-              className="bg-transparent text-gray-800 dark:text-gray-200 mr-3 text-2xl hover:text-black dark:hover:text-white"
+              className="bg-transparent text-gray-800 dark:text-gray-200 mr-1.5 text-lg hover:text-black dark:hover:text-white"
             >
               <FaCircleChevronRight />
             </button>
           </div>
 
-          <div className="bg-white dark:bg-gray-800 flex justify-around py-2 border-t dark:border-gray-700">
-            <button className="flex flex-col items-center text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 text-sm">
-              <FaHome className="mb-1" />
+          <div className="bg-white dark:bg-gray-800 flex justify-around py-1.5 border-t dark:border-gray-700">
+            <button className="flex flex-col items-center text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 text-[11px]">
+              <FaHome className="mb-0.5 text-xs" />
               Home
             </button>
-            <button className="flex flex-col items-center text-gray-500 hover:text-blue-600 text-sm relative">
-              <FaCommentDots className="mb-1" />
+            <button className="flex flex-col items-center text-gray-500 hover:text-blue-600 text-[11px] relative">
+              <FaCommentDots className="mb-0.5 text-xs" />
               Messages
             </button>
-            <button className="flex flex-col items-center text-gray-500 hover:text-blue-600 text-sm">
-              <FaQuestionCircle className="mb-1" />
+            <button className="flex flex-col items-center text-gray-500 hover:text-blue-600 text-[11px]">
+              <FaQuestionCircle className="mb-0.5 text-xs" />
               Help
             </button>
           </div>
@@ -226,7 +226,7 @@ const ContactUs = () => {
 
       <button
         onClick={handleToggle}
-        className="fixed bottom-4 right-3 sm:bottom-6 sm:right-6 md:bottom-10 md:right-10 z-50 bg-blue-600 text-white px-3 py-1.5 sm:px-4 sm:py-2 text-sm sm:text-base rounded-full shadow-lg hover:bg-blue-700"
+        className="fixed bottom-4 right-3 sm:bottom-6 sm:right-6 md:bottom-10 md:right-10 z-50 bg-blue-600 text-white px-3 py-1.5 text-xs sm:text-sm rounded-full shadow-lg hover:bg-blue-700"
       >
         {isOpen ? "Close Chat" : "Contact Us"}
       </button>

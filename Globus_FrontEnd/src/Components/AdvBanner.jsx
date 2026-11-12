@@ -7,9 +7,18 @@ import {
 
 const AdvBanner = () => {
   const slides = [
-    { webp: "Images/FlashSale.webp", fallback: "Images/FlashSale.png" },
-    { webp: "Images/Electronics.webp", fallback: "Images/Electronics.png" },
-    { webp: "Images/HomeAppliance.webp", fallback: "Images/HomeAppliance.png" },
+    {
+      webp: "Images/Banner_FlashSale.webp",
+      fallback: "Images/Flash Sale_ Up to 75% Off (1).png",
+    },
+    {
+      webp: "Images/Banner_HomeAppliances.webp",
+      fallback: "Images/Home Appliances City Sale.png",
+    },
+    {
+      webp: "Images/Banner_Smartwatch.webp",
+      fallback: "Images/11.11 Singles Day Smartwatch Sale.png",
+    },
   ];
   const [cur, setCur] = useState(0);
   const [isPaused, setIsPaused] = useState(false);

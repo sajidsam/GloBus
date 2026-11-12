@@ -406,7 +406,43 @@ const Products = ({ visibleSectionCount = 4 }) => {
             </div>
           </div>
 
-          <div className="relative overflow-hidden rounded-xl bg-white dark:bg-gray-800 p-4 shadow-md dark:shadow-none border border-gray-200 dark:border-gray-700">
+          <div className="block md:hidden">
+            <div className="overflow-hidden rounded-xl">
+              <div
+                className="flex transition-transform duration-500 ease-in-out"
+                style={{
+                  transform: `translateX(-${(currentSlide % Math.max(1, Math.ceil(featuredProducts.length / 2))) * 100}%)`,
+                }}
+              >
+                {Array.from({ length: Math.ceil(featuredProducts.length / 2) }).map((_, pairIdx) => (
+                  <div key={pairIdx} className="w-full flex-shrink-0 grid grid-cols-2 gap-2.5 p-0.5">
+                    {featuredProducts.slice(pairIdx * 2, pairIdx * 2 + 2).map((product) => (
+                      <ProductCard key={product._id} product={product} />
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {featuredProducts.length > 2 && (
+              <div className="flex justify-center gap-1.5 mt-3">
+                {Array.from({ length: Math.ceil(featuredProducts.length / 2) }).map((_, index) => {
+                  const active = index === (currentSlide % Math.ceil(featuredProducts.length / 2));
+                  return (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentSlide(index * 2)}
+                      className={`h-1.5 rounded-full transition-all duration-300 ${
+                        active ? "w-5 bg-blue-600" : "w-1.5 bg-gray-300 dark:bg-gray-600"
+                      }`}
+                    />
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
+          <div className="hidden md:block relative overflow-hidden rounded-xl bg-white dark:bg-gray-800 p-4 shadow-md dark:shadow-none border border-gray-200 dark:border-gray-700">
             <div
               className="flex transition-transform duration-500 ease-in-out"
               style={{ transform: `translateX(-${currentSlide * 100}%)` }}
@@ -457,7 +493,6 @@ const Products = ({ visibleSectionCount = 4 }) => {
               ))}
             </div>
 
-            {/* Slide Indicators */}
             <div className="flex justify-center gap-2 mt-4">
               {featuredProducts.map((_, index) => (
                 <button
