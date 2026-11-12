@@ -7,9 +7,9 @@ import {
 
 const AdvBanner = () => {
   const slides = [
-    "Images/FlashSale.png",
-    "Images/Electronics.png",
-    "Images/HomeAppliance.png",
+    { webp: "Images/FlashSale.webp", fallback: "Images/FlashSale.png" },
+    { webp: "Images/Electronics.webp", fallback: "Images/Electronics.png" },
+    { webp: "Images/HomeAppliance.webp", fallback: "Images/HomeAppliance.png" },
   ];
   const [cur, setCur] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -27,47 +27,55 @@ const AdvBanner = () => {
 
   return (
     <div
-      className="relative w-full aspect-[16/9] lg:aspect-auto lg:h-[390px] xl:h-[480px] 2xl:h-[600px] overflow-hidden rounded-xl shadow-md"
+      className="relative w-full overflow-hidden rounded-xl shadow-md aspect-[16/9] lg:aspect-auto lg:h-[320px] xl:h-[400px] 2xl:h-[500px]"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
       <div
-        className="flex transition-transform duration-700 h-full"
+        className="flex transition-transform duration-700 h-full w-full"
         style={{ transform: `translateX(-${cur * 100}%)` }}
       >
-        {slides.map((src, i) => (
-          <div key={i} className="w-full h-full flex-shrink-0">
-            <img
-              src={src}
-              alt="Advertisement Banner"
-              className="w-full h-full object-cover object-center"
-            />
+        {slides.map((slide, i) => (
+          <div key={i} className="w-full h-full flex-shrink-0 min-w-full">
+            <picture>
+              <source srcSet={slide.webp} type="image/webp" />
+              <img
+                src={slide.fallback}
+                alt="Advertisement Banner"
+                className="w-full h-full object-cover object-center"
+                loading={i === 0 ? "eager" : "lazy"}
+                fetchPriority={i === 0 ? "high" : "low"}
+                decoding="async"
+                width="1280"
+                height="720"
+              />
+            </picture>
           </div>
         ))}
       </div>
 
       <button
         onClick={prev}
-        className="absolute top-1/2 left-3 -translate-y-1/2 bg-black/30 text-white p-3 rounded-full hover:bg-black/50 transition"
+        className="absolute top-1/2 left-2 sm:left-3 -translate-y-1/2 bg-black/30 text-white p-2 sm:p-3 rounded-full hover:bg-black/50 transition"
       >
-        <FontAwesomeIcon icon={faChevronLeft} size="lg" />
+        <FontAwesomeIcon icon={faChevronLeft} className="text-sm sm:text-lg" />
       </button>
       <button
         onClick={next}
-        className="absolute top-1/2 right-3 -translate-y-1/2 bg-black/30 text-white p-3 rounded-full hover:bg-black/50 transition"
+        className="absolute top-1/2 right-2 sm:right-3 -translate-y-1/2 bg-black/30 text-white p-2 sm:p-3 rounded-full hover:bg-black/50 transition"
       >
-        <FontAwesomeIcon icon={faChevronRight} size="lg" />
+        <FontAwesomeIcon icon={faChevronRight} className="text-sm sm:text-lg" />
       </button>
 
-      <div className="absolute bottom-3 w-full flex justify-center gap-2 ">
+      <div className="absolute bottom-2 sm:bottom-3 w-full flex justify-center gap-2">
         {slides.map((_, i) => (
           <button
             key={i}
             onClick={() => setCur(i)}
-            className={`w-3 h-3 rounded-full transition-colors ${
+            className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-colors ${
               cur === i
                 ? "bg-white dark:bg-gray-800"
-                : "bg-white dark:bg-gray-800/50"
+                : "bg-white/50 dark:bg-gray-800/50"
             }`}
           />
         ))}

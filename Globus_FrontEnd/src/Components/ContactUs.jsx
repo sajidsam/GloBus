@@ -138,7 +138,7 @@ const ContactUs = () => {
   return (
     <>
       {isOpen && (
-        <div className="fixed bottom-24 right-10 w-80 h-[500px] z-50 rounded-2xl shadow-2xl bg-white dark:bg-gray-800 border dark:border-gray-700 flex flex-col overflow-hidden transition-all">
+        <div className="fixed bottom-20 right-2 sm:right-6 md:right-10 w-[calc(100vw-16px)] sm:w-80 h-[55vh] sm:h-[420px] md:h-[500px] max-h-[480px] z-50 rounded-2xl shadow-2xl bg-white dark:bg-gray-800 border dark:border-gray-700 flex flex-col overflow-hidden transition-all">
           <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-white px-4 py-3 flex items-center justify-between">
             <span className="font-semibold">GloBus Support</span>
             <button
@@ -226,7 +226,7 @@ const ContactUs = () => {
 
       <button
         onClick={handleToggle}
-        className="fixed bottom-10 right-10 z-50 bg-blue-600 text-white px-4 py-2 rounded-full shadow-lg hover:bg-blue-700"
+        className="fixed bottom-4 right-3 sm:bottom-6 sm:right-6 md:bottom-10 md:right-10 z-50 bg-blue-600 text-white px-3 py-1.5 sm:px-4 sm:py-2 text-sm sm:text-base rounded-full shadow-lg hover:bg-blue-700"
       >
         {isOpen ? "Close Chat" : "Contact Us"}
       </button>
