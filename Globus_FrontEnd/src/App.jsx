@@ -1,6 +1,7 @@
 
-import { BrowserRouter } from "react-router-dom"
-import AllRoutes from "./Routes/AllRoutes"
+import { BrowserRouter } from "react-router-dom";
+import AllRoutes from "./Routes/AllRoutes";
+import "./App.css";
 
 
 function App() {

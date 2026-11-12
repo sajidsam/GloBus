@@ -6,6 +6,11 @@ html {
   font-size: 13.5px;
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
+  background-color: #ffffff;
+}
+
+body {
+  background-color: #ffffff;
 }
 
 @media (min-width: 1440px) {
