@@ -65,6 +65,7 @@ const SignIn = () => {
     try {
       const result = await signInWithPopup(auth, provider);
       const googleUser = result.user;
+      const idToken = await googleUser.getIdToken();
 
       const targetUrl = API_URL.endsWith("/")
         ? `${API_URL}api/auth/google`
@@ -74,6 +75,7 @@ const SignIn = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          idToken,
           email: googleUser.email,
           name: googleUser.displayName,
           avatar: googleUser.photoURL,

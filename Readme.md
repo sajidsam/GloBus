@@ -13,7 +13,7 @@ GloBus is a modern, feature-rich, and scalable e-commerce platform built with th
 - **Multi-language Support**: Fully localized interface using `i18next`.
 - **Shopping Cart & Checkout**: Interactive cart management and seamless checkout process.
 - **Secure Payments**: Integrated with **SSLCommerz** for secure online transactions in Bangladesh.
-- **Authentication**: Secure user signup, login, and profile management (Firebase Auth & custom JWT).
+- **Authentication**: Secure user signup, login, and profile management with email/password (Bcrypt & Nodemailer OTP reset) and Google OAuth with Firebase ID Token (JWT) verification on the backend.
 - **AI Customer Support**: Intelligent customer support chatbot powered by Google's Gemini AI, supporting Bengali and Banglish queries.
 - **Newsletter Subscription**: Keep up with the latest deals and offers.
 
@@ -41,7 +41,7 @@ GloBus is a modern, feature-rich, and scalable e-commerce platform built with th
 - **Database**: MongoDB (Native Driver)
 - **Payment Gateway**: SSLCommerz (`sslcommerz-lts`)
 - **AI Integration**: Google GenAI for chatbot capabilities
-- **Other Utilities**: Multer (File Uploads), Bcrypt (Password Hashing), CORS, Dotenv
+- **Other Utilities**: Multer (File Uploads), Bcrypt (Password Hashing), Nodemailer (Email & OTP verification), Firebase ID Token (JWT) Verification, CORS, Dotenv
 
 # Getting Started
 
@@ -71,6 +71,10 @@ GloBus is a modern, feature-rich, and scalable e-commerce platform built with th
    PORT=5000
    MONGODB_URI=your_mongodb_connection_string
    GEMINI_API_KEY=your_gemini_api_key
+   FIREBASE_API_KEY=your_firebase_api_key
+   FIREBASE_PROJECT_ID=your_firebase_project_id
+   EMAIL_USER=your_email@gmail.com
+   EMAIL_PASS=your_email_app_password
    ```
 
    Create a `.env.local` file in the `Globus_FrontEnd` directory:
@@ -123,6 +127,8 @@ GloBus/
 │
 └── Globus_Backend/     # Node.js/Express Backend
     ├── Controllers/    # Business logic (User, Product, Order, Payment)
+    ├── middleware/     # Auth & token validation middlewares
+    ├── utils/          # Helper services (Firebase Auth, Email, Cache)
     ├── server.js       # Entry point & Routes
     └── package.json    # Backend dependencies
 ```

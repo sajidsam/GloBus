@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const { ObjectId } = require("mongodb");
 const { sendWelcomeEmail, sendPasswordResetEmail } = require("../utils/emailService");
+const { verifyFirebaseIdToken } = require("../utils/verifyFirebaseToken");
 
 // Sign Up user
 const signupUser = async (req, res) => {
@@ -86,7 +87,7 @@ const forgotPassword = async (req, res) => {
       return res.status(400).json({ success: false, message: "Please provide a valid email address." });
     }
 
-    const normalizedEmail = email.trim().toLowerCase();
+    const normalizedEmail = verifiedEmail.trim().toLowerCase();
     const user = await usersCollection.findOne({ email: normalizedEmail });
 
     if (!user) {
@@ -310,19 +311,44 @@ const googleLogin = async (req, res) => {
     const client = req.app.locals.mongoClient;
     const usersCollection = client.db("globusDB").collection("users");
     
-    const { email, name, avatar } = req.body;
+    const { idToken, email: rawEmail, name: rawName, avatar: rawAvatar } = req.body;
 
-    if (!email) {
+    let verifiedEmail = rawEmail;
+    let verifiedName = rawName;
+    let verifiedAvatar = rawAvatar;
+
+    // Verify Firebase JWT token
+    if (idToken) {
+      try {
+        const decoded = await verifyFirebaseIdToken(idToken);
+        verifiedEmail = decoded.email;
+        verifiedName = decoded.name || verifiedName;
+        verifiedAvatar = decoded.avatar || verifiedAvatar;
+      } catch (verifyErr) {
+        console.error("Firebase token verification failed:", verifyErr.message);
+        return res.status(401).json({
+          success: false,
+          message: "Unauthorized: Invalid or expired Google token",
+        });
+      }
+    } else {
+      return res.status(400).json({
+        success: false,
+        message: "Google ID Token is required for authentication",
+      });
+    }
+
+    if (!verifiedEmail) {
       return res.status(400).json({ success: false, message: "Email is required for Google login" });
     }
 
-    const normalizedEmail = email.trim().toLowerCase();
+    const normalizedEmail = verifiedEmail.trim().toLowerCase();
     
     let user = await usersCollection.findOne({ email: normalizedEmail });
 
     if (user) {
       const updateDoc = {};
-      if (avatar && !user.avatar) updateDoc.avatar = avatar;
+      if (verifiedAvatar && !user.avatar) updateDoc.avatar = verifiedAvatar;
       if (user.authProvider !== "google") updateDoc.authProvider = "google";
       
       if (Object.keys(updateDoc).length > 0) {
@@ -331,16 +357,16 @@ const googleLogin = async (req, res) => {
       }
     } else {
       const result = await usersCollection.insertOne({
-        name,
+        name: verifiedName || normalizedEmail.split("@")[0],
         email: normalizedEmail,
-        avatar,
+        avatar: verifiedAvatar || "",
         authProvider: "google",
         role: "user",
         createdAt: new Date(),
       });
       
       user = await usersCollection.findOne({ _id: result.insertedId });
-      sendWelcomeEmail(normalizedEmail, name).catch(console.error);
+      sendWelcomeEmail(normalizedEmail, verifiedName).catch(console.error);
     }
 
     const { password: pwd, resetPasswordOtp, resetPasswordExpires, ...userData } = user;

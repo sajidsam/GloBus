@@ -61,11 +61,47 @@ const SignUp = () => {
   };
 
   const googleSignUp = async () => {
+    setError("");
     try {
-      await signInWithPopup(auth, googleProvider);
+      const result = await signInWithPopup(auth, googleProvider);
+      const googleUser = result.user;
+      const idToken = await googleUser.getIdToken();
+
+      const targetUrl = API_URL.endsWith("/")
+        ? `${API_URL}api/auth/google`
+        : `${API_URL}/api/auth/google`;
+
+      const res = await fetch(targetUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          idToken,
+          email: googleUser.email,
+          name: googleUser.displayName,
+          avatar: googleUser.photoURL,
+        }),
+      });
+
+      let data = null;
+      try {
+        const contentType = res.headers.get("content-type") || "";
+        if (contentType.includes("application/json")) {
+          data = await res.json();
+        } else {
+          data = JSON.parse(await res.text());
+        }
+      } catch {
+        data = null;
+      }
+
+      if (!res.ok) {
+        return setError(data?.message || "Failed to authenticate with server.");
+      }
+
+      localStorage.setItem("user", JSON.stringify(data.user || data));
       navigate("/");
     } catch (err) {
-      setError(err.message);
+      setError(err.message || "An error occurred during Google sign up.");
     }
   };
 
